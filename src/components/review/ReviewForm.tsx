@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { useUser } from "@/hooks/useUser";
+import { useUser } from "@/hooks";
 import { Star, Send, AlertCircle } from "lucide-react";
 
 interface ReviewFormProps {

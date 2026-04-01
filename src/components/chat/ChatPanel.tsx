@@ -1,7 +1,6 @@
 'use client'
 
-import { useChat } from '@/hooks/useChat'
-import { useUser } from '@/hooks/useUser'
+import { useChat, useUser } from '@/hooks'
 import { useEffect, useRef, useState } from 'react'
 import { Send, AlertCircle } from 'lucide-react'
 
