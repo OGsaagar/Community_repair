@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: supabase_postgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  supabase:
+    image: supabase/supabase:latest
+    container_name: supabase_studio
+    environment:
+      POSTGRES_PASSWORD: postgres
+      SUPABASE_JWT_SECRET: your-super-secret-jwt-token-with-at-least-32-characters-long!
+      SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4dGVuc2lvbiIsInJvbGUiOiJhbm9uIn0.ejOezOvQQWfsGHkJqEBdVHkJpINpDuIbDxkIB52yWbQ
+      SUPABASE_SERVICE_ROLE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4dGVuc2lvbiIsInJvbGUiOiJzZXJ2aWNlX3JvbGUifQ.wasIMo0nNKE5aMxAz9NEiZltVt8GvsuqmKQP15DxCKc
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+    ports:
+      - "8000:8000"
+      - "5555:5555"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - supabase_volume:/var/lib/supabase/data
+
+volumes:
+  postgres_data:
+    driver: local
+  supabase_volume:
+    driver: local
